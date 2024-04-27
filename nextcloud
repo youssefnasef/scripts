@@ -1,0 +1,18 @@
+cd ~
+mkdir -p docker/nextcloud
+cd docker/nextcloud 
+echo "services:
+  nextcloud:
+    image: lscr.io/linuxserver/nextcloud:latest
+    container_name: nextcloud
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - ~/docker/nextcloud/nextcloud/config:/config
+      - ~/docker/nextcloud/data:/data
+    ports:
+      - 443:443
+    restart: unless-stopped" > docker-compose.yml
+docker compose up -d
