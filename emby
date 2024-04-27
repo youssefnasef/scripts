@@ -1,0 +1,19 @@
+cd ~
+mkdir -p docker/emby
+cd docker/emby 
+echo "services:
+  emby:
+    image: lscr.io/linuxserver/emby:latest
+    container_name: emby
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - ./library:/config
+      - /mnt:/mnt
+    ports:
+      - 8096:8096
+      - 8920:8920 #optional
+    restart: unless-stopped" > docker-compose.yml
+docker compose up -d
