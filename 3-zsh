@@ -1,5 +1,5 @@
 sudo apt install zsh curl wget unzip
-mkdir /home/youssef/Downloads/Hack -p
+mkdir /home/youssef/Downloads/Hack 
 unzip Hack.zip -d /home/youssef/Downloads/Hack
 sudo cp /home/youssef/Downloads/Hack /usr/share/fonts -r
 sudo chsh -s /bin/zsh
