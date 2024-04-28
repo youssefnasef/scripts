@@ -1,6 +1,6 @@
 sudo apt install zsh curl wget unzip
 
-wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Hack.zip
+wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Hack.zip"
 
 mkdir /home/youssef/Downloads/Hack -p
 
