@@ -1,0 +1,87 @@
+#!/bin/bash
+
+# Update the package list and upgrade existing packages
+sudo apt update && sudo apt upgrade -y
+
+# Install Zsh
+sudo apt install zsh -y
+
+# Check if Zsh is installed correctly
+if ! command -v zsh &> /dev/null; then
+    echo "Zsh installation failed!"
+    exit 1
+fi
+
+# Set Zsh as the default shell
+chsh -s $(which zsh)
+
+# Install Oh My Zsh
+if [ ! -d "$HOME/.oh-my-zsh" ]; then
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+else
+    echo "Oh My Zsh is already installed."
+fi
+
+# Install zsh-autosuggestions plugin
+if [ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions" ]; then
+    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+else
+    echo "zsh-autosuggestions is already installed."
+fi
+
+# Install zsh-syntax-highlighting plugin
+if [ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting" ]; then
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+else
+    echo "zsh-syntax-highlighting is already installed."
+fi
+
+# Install zsh-completions plugin
+if [ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-completions" ]; then
+    git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-completions
+else
+    echo "zsh-completions is already installed."
+fi
+
+# Install zsh-history-substring-search plugin
+if [ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-history-substring-search" ]; then
+    git clone https://github.com/zsh-users/zsh-history-substring-search ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-history-substring-search
+else
+    echo "zsh-history-substring-search is already installed."
+fi
+
+# Install git-open plugin
+if [ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/git-open" ]; then
+    git clone https://github.com/paulirish/git-open.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/git-open
+else
+    echo "git-open is already installed."
+fi
+
+# Install zsh-you-should-use plugin
+if [ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-you-should-use" ]; then
+    git clone https://github.com/MichaelAquilina/zsh-you-should-use.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-you-should-use
+else
+    echo "zsh-you-should-use is already installed."
+fi
+
+# Install fast-syntax-highlighting plugin
+if [ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting" ]; then
+    git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
+else
+    echo "fast-syntax-highlighting is already installed."
+fi
+
+# Install zsh-nvm plugin
+if [ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-nvm" ]; then
+    git clone https://github.com/lukechilds/zsh-nvm ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-nvm
+else
+    echo "zsh-nvm is already installed."
+fi
+
+# Modify .zshrc to enable plugins
+sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting zsh-completions zsh-history-substring-search git-open zsh-you-should-use fast-syntax-highlighting zsh-nvm)/' $HOME/.zshrc
+
+# Reload Zsh configuration
+source $HOME/.zshrc
+
+echo "Zsh and plugins have been successfully installed!"
