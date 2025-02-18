@@ -78,10 +78,22 @@ else
     echo "zsh-nvm is already installed."
 fi
 
-# Modify .zshrc to enable plugins
+# Install Powerlevel10k theme
+if [ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k" ]; then
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+else
+    echo "Powerlevel10k is already installed."
+fi
+
+# Modify .zshrc to enable plugins and set Powerlevel10k as the theme
 sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting zsh-completions zsh-history-substring-search git-open zsh-you-should-use fast-syntax-highlighting zsh-nvm)/' $HOME/.zshrc
+sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="powerlevel10k\/powerlevel10k"/' $HOME/.zshrc
 
 # Reload Zsh configuration
 source $HOME/.zshrc
 
-echo "Zsh and plugins have been successfully installed!"
+echo "Zsh, plugins, and Powerlevel10k have been successfully installed!"
+
+# Run Powerlevel10k configuration wizard (optional)
+echo "Running Powerlevel10k configuration wizard..."
+zsh
