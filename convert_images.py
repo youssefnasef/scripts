@@ -13,20 +13,24 @@ SUPPORTED_FORMATS = ['.psd', '.tiff', '.tif']
 def convert_psd(input_path, output_path):
     psd = PSDImage.open(input_path)
     composite = psd.composite()
-    composite = composite.convert("RGB")
-
-    # حاول نحافظ على DPI الأصلي لو موجود، وإلا استخدم 300
+    
+    # PIL Image من psd-tools بيرجعها دايمًا RGB، فمع الأسف لازم نحفظها كده
     dpi = composite.info.get("dpi", (300, 300))
     composite.save(output_path, "JPEG", dpi=dpi)
 
 
 def convert_image(input_path, output_path):
     img = Image.open(input_path)
-    rgb_img = img.convert("RGB")
 
-    # حاول نحافظ على DPI الأصلي لو موجود، وإلا استخدم 300
+    # نخلي الصورة زي ما هي (RGB أو CMYK)
+    color_mode = img.mode
     dpi = img.info.get("dpi", (300, 300))
-    rgb_img.save(output_path, "JPEG", dpi=dpi)
+
+    if color_mode in ["RGB", "CMYK"]:
+        img.save(output_path, "JPEG", dpi=dpi)
+    else:
+        # لو الصورة بنظام ألوان مش مدعوم في JPEG، نحولها لـ RGB
+        img.convert("RGB").save(output_path, "JPEG", dpi=dpi)
 
 
 def process_folder():
@@ -36,15 +40,11 @@ def process_folder():
             ext = ext.lower()
             if ext in SUPPORTED_FORMATS:
                 input_path = os.path.join(root, filename)
-
-                # المسار النسبي من الجذر
                 relative_path = os.path.relpath(root, ROOT_FOLDER)
                 output_dir = os.path.join(OUTPUT_ROOT, relative_path)
                 os.makedirs(output_dir, exist_ok=True)
-
                 output_path = os.path.join(output_dir, name + ".jpg")
 
-                # تأكد مفيش كتابة في نفس الفولدر الأصلي
                 if not os.path.exists(output_path):
                     try:
                         if ext == '.psd':
